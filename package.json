@@ -1,0 +1,92 @@
+{
+  "name": "ai-gateway-vscode",
+  "displayName": "AIcad",
+  "description": "AIcad: chat and an approval-gated coding agent in VS Code, backed by your self-hosted AI gateway (credit-aware multi-provider routing).",
+  "version": "0.7.0",
+  "publisher": "arsyad",
+  "license": "MIT",
+  "engines": { "vscode": "^1.85.0" },
+  "categories": ["AI", "Chat"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "aicad",
+          "title": "AIcad",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "aicad": [
+        {
+          "type": "webview",
+          "id": "aicadChat",
+          "name": "Chat"
+        }
+      ]
+    },
+    "commands": [
+      { "command": "aicad.setApiKey", "title": "AIcad: Set API Key" },
+      { "command": "aicad.selectServer", "title": "AIcad: Select Server…" },
+      { "command": "aicad.newChat", "title": "AIcad: New Chat" },
+      { "command": "aicad.showHistory", "title": "AIcad: Show Chat History" },
+      { "command": "aicad.refreshModels", "title": "AIcad: Refresh Models" },
+      { "command": "aicad.explainSelection", "title": "AIcad: Explain Selection" },
+      { "command": "aicad.refactorSelection", "title": "AIcad: Refactor Selection" },
+      { "command": "aicad.askSelection", "title": "AIcad: Ask About Selection…" }
+    ],
+    "menus": {
+      "editor/context": [
+        { "command": "aicad.explainSelection", "when": "editorHasSelection", "group": "aicad@1" },
+        { "command": "aicad.refactorSelection", "when": "editorHasSelection", "group": "aicad@2" },
+        { "command": "aicad.askSelection", "when": "editorHasSelection", "group": "aicad@3" }
+      ]
+    },
+    "configuration": {
+      "title": "AIcad",
+      "properties": {
+        "aicad.url": {
+          "type": "string",
+          "default": "http://localhost:3000/api/v1",
+          "description": "Base URL of the active gateway's /v1 API (no trailing slash). Switch quickly with 'AIcad: Select Server…' or the status bar item."
+        },
+        "aicad.servers": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string", "description": "Label shown in the server picker." },
+              "url": { "type": "string", "description": "Gateway URL, e.g. https://my-tunnel.trycloudflare.com/api/v1" }
+            },
+            "required": ["url"]
+          },
+          "description": "Named gateway servers offered by 'AIcad: Select Server…', e.g. a localhost entry and a public tunnel URL for use from other machines."
+        },
+        "aicad.agentEffort": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "default"],
+          "default": "low",
+          "description": "How long the model reasons before each Agent step. 'low' keeps steps fast; raise it for hard design or debugging tasks. 'default' leaves it to the model."
+        },
+        "aicad.model": {
+          "type": "string",
+          "default": "auto",
+          "description": "Default model alias to request ('auto' lets the gateway pick by cost/budget)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "package": "vsce package --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "typescript": "^5.7.0"
+  }
+}
