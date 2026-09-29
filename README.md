@@ -4,6 +4,8 @@ AIcad is a chat panel and an approval-gated coding agent for VS Code, backed by
 your self-hosted AI gateway: streaming replies rendered as Markdown, a model
 picker (including `auto` routing), a server picker, and right-click code actions.
 
+<p><img src="docs/extension.png" alt="AIcad chat and agent panel in VS Code" width="360"></p>
+
 ## Setup
 1. Pick the gateway with **AIcad: Select Server…** (Command Palette, the status bar item, or the server button in the chat panel). It lists servers from the `aicad.servers` setting, recently used URLs, and localhost, or lets you paste a new URL such as a Cloudflare tunnel. The active URL is stored in `aicad.url` (default `http://localhost:3000/api/v1`).
 2. Run command **AIcad: Set API Key** and paste a `gw_live_…` key.
